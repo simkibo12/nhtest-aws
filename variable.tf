@@ -37,6 +37,8 @@ variable "data_disk" {
   }))
 }
 
+/*
 variable "force_detach" {
   type = bool
 }
+*/
