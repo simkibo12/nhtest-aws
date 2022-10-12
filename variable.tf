@@ -1,3 +1,7 @@
+#ATHEN#
+variable "access_key" {}
+variable "secret_key" {}
+
 #NETWORK#
 variable "subnet_id" {}
 
