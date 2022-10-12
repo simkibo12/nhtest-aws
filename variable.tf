@@ -37,8 +37,7 @@ variable "data_disk" {
   }))
 }
 
-/*
-variable "force_detach" {
-  type = bool
-}
-*/
+
+#variable "force_detach" {
+#  type = bool
+#}
