@@ -47,6 +47,6 @@ resource "aws_volume_attachment" "data_disk_attachment" {
   for_each = var.data_disk
   #force_detach = var.force_detach
   device_name = each.value.data_device_name // azure = lun
-  volume_id   = aws_ebs_volume.data_disk[each.key].id             //리소스 값
+  volume_id   = aws_ebs_volume.data_disk[each.key].id             //리소스 값.
   instance_id = aws_instance.instance[each.value.ec2_instance].id //리소스 값
 }
