@@ -1,7 +1,3 @@
-#ATHEN#
-variable "access_key" {}
-variable "secret_key" {}
-
 #NETWORK#
 variable "subnet_id" {}
 
@@ -9,8 +5,6 @@ variable "subnet_id" {}
 variable "security_group_id" {}
 
 #EC2#
-variable "ami" {}
-variable "instance_type" {}
 variable "key_pair" {}
 
 #FOR_EACH#
@@ -20,6 +14,8 @@ variable "ec2_instance" {
   type = map(object({
     vm_name = string
     os_disk_name = string
+    ami            = string
+    instance_type  = string
     os_volume_type = string
     os_volume_size = number
   }))
@@ -36,7 +32,6 @@ variable "data_disk" {
     data_volume_size = number
   }))
 }
-
 
 variable "force_detach" {
   type = bool
