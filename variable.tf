@@ -12,7 +12,7 @@ variable "public_subnet_cidr_blocks" {}
 variable "security_group_name" {}
 variable "security_group_description" {}
 variable "security_group_tag" {}      // "Terraform aws security group test"
-variable "security_group_rule"{
+variable "security_group_rule"{}
 
   type = map(object({
     type = string
