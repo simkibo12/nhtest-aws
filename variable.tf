@@ -1,3 +1,7 @@
+#ATHEN#
+variable "access_key" {}
+variable "secret_key" {}
+
 #DATASOURCE#
 variable "is_portal_vpc" {
   type = bool
