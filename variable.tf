@@ -3,10 +3,26 @@ variable "access_key" {}
 variable "secret_key" {}
 
 #NETWORK#
-variable "subnet_id" {}
+#variable "subnet_id" {}
+variable "cidr_block" {}
+variable "public_subnet_cidr_blocks" {}
 
 #SECURITY#
-variable "security_group_id" {}
+#variable "security_group_id" {}
+variable "security_group_name" {}
+variable "security_group_description" {}
+variable "security_group_tag" {}      // "Terraform aws security group test"
+variable "security_group_rule"{
+
+  type = map(object({
+    type = string
+    security_group_name = string
+    from_port = number
+    to_port = number
+    cidr_blocks = list
+    protocol = string
+  }))
+}
 
 #EC2#
 variable "key_pair" {}
