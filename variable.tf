@@ -19,8 +19,9 @@ variable "security_group_rule"{
     security_group_name = string
     from_port = number
     to_port = number
-    cidr_blocks = list
+    #cidr_blocks = string
     protocol = string
+    description = string
   }))
 }
 
