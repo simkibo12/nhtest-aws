@@ -21,13 +21,13 @@ variable "access_key" {}
 variable "secret_key" {}
 
 #NETWORK#
-#variable "subnet_id" {}
+variable "subnet_id" {}
 variable "vpc_name" {}
 variable "cidr_block" {}
 variable "new_subnet_cidr_blocks" {}
 
 #SECURITY#
-#variable "security_group_id" {}
+variable "security_group_id" {}
 variable "security_group_name" {}
 variable "security_group_description" {}
 variable "security_group_tag" {}      // "Terraform aws security group test"
