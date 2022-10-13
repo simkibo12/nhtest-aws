@@ -34,7 +34,7 @@ resource "aws_route" "new_route" {
 resource "aws_subnet" "new_subnet" {
   vpc_id                  = aws_vpc.new_vpc.id
   cidr_block              = var.new_subnet_cidr_blocks
-#   availability_zone       = var.availability_zones[count.index]
+ availability_zone       = "ap-northeast-2a"
   map_public_ip_on_launch = "true"
   
   }
