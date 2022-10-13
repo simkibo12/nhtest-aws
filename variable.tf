@@ -17,13 +17,13 @@ variable "access_key" {}
 variable "secret_key" {}
 
 #NETWORK#
-variable "subnet_id" {} // false 시 주석
+variable "subnet_id" {}  // false시 ent var에서 변수 값은 넣되, 값을 빈칸으로 넣어야함.
 variable "vpc_name" {}
 variable "cidr_block" {}
 variable "new_subnet_cidr_blocks" {}
 
 #SECURITY#
-variable "security_group_id" {} // false 시 주석
+variable "security_group_id" {}  // false시 ent var에서 변수 값은 넣되, 값을 빈칸으로 넣어야함.
 variable "security_group_name" {}
 variable "security_group_description" {}
 variable "security_group_tag" {}      // "Terraform aws security group test"
