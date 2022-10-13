@@ -66,7 +66,7 @@ resource "aws_security_group" "sg" {
   count = var.is_portal_sg == false ? 1 : 0
   name = var.security_group_name
   description = var.security_group_description //"Allow TLS inbound traffic"
-  vpc_id = aws_vpc.new_vpc.id[count.index]                      // vpc id 필요             >>>> 수정 필요
+  vpc_id = aws_vpc.new_vpc.id[0]                      // vpc id 필요             >>>> 수정 필요
   tags = { Name = var.security_group_tag }
 }
 
