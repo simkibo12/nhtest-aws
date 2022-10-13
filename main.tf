@@ -30,9 +30,9 @@ resource "aws_route_table" "new_route_table" {
   
 resource "aws_route" "new_route" {
   count = var.is_portal_vpc == false ? 1 : 0
-  route_table_id         = aws_route_table.new_route_table.id
+  route_table_id         = aws_route_table.new_route_table[0].id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.new_igw.id
+  gateway_id             = aws_internet_gateway.new_igw[0].id
   }
   
   
@@ -48,8 +48,8 @@ resource "aws_subnet" "new_subnet" {
   
   resource "aws_route_table_association" "new_subnet_route_table_association" {
     count = var.is_portal_subnet == false ? 1 : 0
-    subnet_id      = aws_subnet.new_subnet.id
-    route_table_id = aws_route_table.new_route_table.id
+    subnet_id      = aws_subnet.new_subnet[0].id
+    route_table_id = aws_route_table.new_route_table[0].id
   }
 
 
@@ -95,7 +95,7 @@ resource "aws_instance" "instance" {
   key_name      = data.aws_key_pair.kibo-aws-key-pair.key_name
   associate_public_ip_address = true
   subnet_id                   = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
-  vpc_security_group_ids      = var.is_portal_sg == true ? [data.aws_security_group.sg[0].id] : [aws_security_group.sg[0].id] // string required [] 필요
+  vpc_security_group_ids      = var.is_portal_sg == true ? [data.aws_security_group.kibo-sg[0].id] : [aws_security_group.sg[0].id] // string required [] 필요
   tags                        = {
      Name = each.value.vm_name  // Name으로 해야 ec2 네임이 생성됨............name으로 하면 tag에만 보이고 네임이 없는 ec2가... 생성됨..
      }     //each.key로 하면 key값을 보고 NAME, tag가 생성됨  ec2_01,02 이렇게.. value의 vm_name으로 해야한다.          
