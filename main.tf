@@ -1,11 +1,13 @@
 #NETWORK#
-/*
+
 data "aws_subnet" "kibo-subnet-01" {
+  count = var.is_portal_vpc == false ? 0 : 1
   id = var.subnet_id
 }
-*/
+
 
 resource "aws_vpc" "new_vpc" {
+  count = var.is_portal_vpc == false ? 1 : 0
   cidr_block           = var.cidr_block
 # enable_dns_support   = true
 # enable_dns_hostnames = true
@@ -16,15 +18,18 @@ resource "aws_vpc" "new_vpc" {
 }
 
 resource "aws_internet_gateway" "new_igw" {
+  count = var.is_portal_vpc == false ? 1 : 0
   vpc_id = aws_vpc.new_vpc.id
   }
   
   
 resource "aws_route_table" "new_route_table" {
+  count = var.is_portal_vpc == false ? 1 : 0
   vpc_id = aws_vpc.new_vpc.id
   }
   
 resource "aws_route" "new_route" {
+  count = var.is_portal_vpc == false ? 1 : 0
   route_table_id         = aws_route_table.new_route_table.id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.new_igw.id
@@ -32,15 +37,17 @@ resource "aws_route" "new_route" {
   
   
 resource "aws_subnet" "new_subnet" {
+  count = var.is_portal_subnet == false ? 1 : 0
   vpc_id                  = aws_vpc.new_vpc.id
   cidr_block              = var.new_subnet_cidr_blocks
- availability_zone       = "ap-northeast-2a"
+  availability_zone       = "ap-northeast-2a"
   map_public_ip_on_launch = "true"
   
   }
   
   
   resource "aws_route_table_association" "new_subnet_route_table_association" {
+    count = var.is_portal_subnet == false ? 1 : 0
     subnet_id      = aws_subnet.new_subnet.id
     route_table_id = aws_route_table.new_route_table.id
   }
@@ -48,13 +55,15 @@ resource "aws_subnet" "new_subnet" {
 
 
 #SECURITY#
-/*
+
 data "aws_security_group" "kibo-sg" {
+  count = var.is_portal_sg == false ? 0 : 1
   id = var.security_group_id
 }
-*/
+
 
 resource "aws_security_group" "sg" {
+  count = var.is_portal_sg == false ? 1 : 0
   name = var.security_group_name
   description = var.security_group_description //"Allow TLS inbound traffic"
   vpc_id = aws_vpc.new_vpc.id                      // vpc id 필요             >>>> 수정 필요
@@ -64,7 +73,7 @@ resource "aws_security_group" "sg" {
 resource "aws_security_group_rule" "sg_rule"{
   for_each = var.security_group_rule
   type = each.value.type
-  security_group_id = aws_security_group.sg.id            //              >>>> 수정 필요
+  security_group_id = aws_security_group.sg[0].id            //              >>>> 수정 필요
   from_port = each.value.from_port
   to_port = each.value.to_port
   protocol = each.value.protocol
