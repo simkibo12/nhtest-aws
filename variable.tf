@@ -1,3 +1,17 @@
+#DATASOURCE#
+variable "is_portal_vpc" {
+  type = bool
+  default = true
+}
+variable "is_portal_subnet" {
+  type = bool
+  default = true
+}
+variable "is_portal_sg" {
+  type = bool
+  default = true
+}
+
 #ATHEN#
 variable "access_key" {}
 variable "secret_key" {}
