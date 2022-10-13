@@ -11,7 +11,7 @@ resource "aws_vpc" "new_vpc" {
 # enable_dns_hostnames = true
 
   tags = {
-  Name = "new-vpc"
+  Name = var.vpc_name
   }
 }
 
@@ -21,7 +21,7 @@ resource "aws_internet_gateway" "new_igw" {
   
   
 resource "aws_route_table" "new_route_table" {
-    vpc_id = aws_vpc.new_vpc.id
+  vpc_id = aws_vpc.new_vpc.id
   }
   
 resource "aws_route" "new_route" {
@@ -37,7 +37,7 @@ resource "aws_subnet" "new_subnet" {
   vpc_id                  = aws_vpc.new_vpc.id
   cidr_block              = var.new_subnet_cidr_blocks[count.index]
 #   availability_zone       = var.availability_zones[count.index]
-  map_public_ip_on_launch = true
+  map_public_ip_on_launch = "true"
   
   }
   
@@ -72,7 +72,7 @@ resource "aws_security_group_rule" "sg_rule"{
   from_port = each.value.from_port
   to_port = each.value.to_port
   protocol = each.value.protocol
-  cidr_blocks = [each.value.cidr_blocks]
+  cidr_blocks = each.value.cidr_blocks
   depends_on = [aws_security_group.sg]
 
 }
@@ -89,8 +89,8 @@ resource "aws_instance" "instance" {
   instance_type = each.value.instance_type
   key_name      = data.aws_key_pair.kibo-aws-key-pair.key_name
   associate_public_ip_address = true
-  subnet_id                   = data.aws_subnet.kibo-subnet-01.id
-  vpc_security_group_ids      = [data.aws_security_group.kibo-sg.id] // string required [] 필요
+  subnet_id                   = aws_subnet.new_subnet.id
+  vpc_security_group_ids      = [aws_security_group.sg.id] // string required [] 필요
   tags                        = {
      Name = each.value.vm_name  // Name으로 해야 ec2 네임이 생성됨............name으로 하면 tag에만 보이고 네임이 없는 ec2가... 생성됨..
      }     //each.key로 하면 key값을 보고 NAME, tag가 생성됨  ec2_01,02 이렇게.. value의 vm_name으로 해야한다.          
@@ -101,6 +101,7 @@ resource "aws_instance" "instance" {
       Name = each.value.os_disk_name
     }
   }  
+  depends_on = [aws_security_group.sg,aws_security_group_rule.sg_rule]
 }
 
 resource "aws_ebs_volume" "data_disk" {
