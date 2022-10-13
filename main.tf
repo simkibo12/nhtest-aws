@@ -19,13 +19,13 @@ resource "aws_vpc" "new_vpc" {
 
 resource "aws_internet_gateway" "new_igw" {
   count = var.is_portal_vpc == false ? 1 : 0
-  vpc_id = aws_vpc.new_vpc.id
+  vpc_id = aws_vpc.new_vpc.id[count.index]
   }
   
   
 resource "aws_route_table" "new_route_table" {
   count = var.is_portal_vpc == false ? 1 : 0
-  vpc_id = aws_vpc.new_vpc.id
+  vpc_id = aws_vpc.new_vpc.id[count.index]
   }
   
 resource "aws_route" "new_route" {
@@ -38,7 +38,7 @@ resource "aws_route" "new_route" {
   
 resource "aws_subnet" "new_subnet" {
   count = var.is_portal_subnet == false ? 1 : 0
-  vpc_id                  = aws_vpc.new_vpc.id
+  vpc_id                  = aws_vpc.new_vpc.id[count.index]
   cidr_block              = var.new_subnet_cidr_blocks
   availability_zone       = "ap-northeast-2a"
   map_public_ip_on_launch = "true"
@@ -66,7 +66,7 @@ resource "aws_security_group" "sg" {
   count = var.is_portal_sg == false ? 1 : 0
   name = var.security_group_name
   description = var.security_group_description //"Allow TLS inbound traffic"
-  vpc_id = aws_vpc.new_vpc.id                      // vpc id 필요             >>>> 수정 필요
+  vpc_id = aws_vpc.new_vpc.id[count.index]                      // vpc id 필요             >>>> 수정 필요
   tags = { Name = var.security_group_tag }
 }
 
