@@ -62,7 +62,7 @@ resource "aws_security_group" "sg" {
   name = var.security_group_name
   description = var.security_group_description //"Allow TLS inbound traffic"
   vpc_id = aws_vpc.new_vpc.id                      // vpc id 필요             >>>> 수정 필요
-  tags { Name = var.security_group_tag }
+  tags = { Name = var.security_group_tag }
 }
 
 resource "aws_security_group_rule" "sg_rule"{
