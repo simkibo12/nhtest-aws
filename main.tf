@@ -19,13 +19,13 @@ resource "aws_vpc" "new_vpc" {
 
 resource "aws_internet_gateway" "new_igw" {
   count = var.is_portal_vpc == false ? 1 : 0
-  vpc_id = aws_vpc.new_vpc.id[0]
+  vpc_id = aws_vpc.new_vpc[0].id
   }
   
   
 resource "aws_route_table" "new_route_table" {
   count = var.is_portal_vpc == false ? 1 : 0
-  vpc_id = aws_vpc.new_vpc.id[0]
+  vpc_id = aws_vpc.new_vpc[0].id
   }
   
 resource "aws_route" "new_route" {
@@ -38,7 +38,7 @@ resource "aws_route" "new_route" {
   
 resource "aws_subnet" "new_subnet" {
   count = var.is_portal_subnet == false ? 1 : 0
-  vpc_id                  = aws_vpc.new_vpc.id[0]
+  vpc_id                  = aws_vpc.new_vpc[0].id
   cidr_block              = var.new_subnet_cidr_blocks
   availability_zone       = "ap-northeast-2a"
   map_public_ip_on_launch = "true"
@@ -66,7 +66,7 @@ resource "aws_security_group" "sg" {
   count = var.is_portal_sg == false ? 1 : 0
   name = var.security_group_name
   description = var.security_group_description //"Allow TLS inbound traffic"
-  vpc_id = aws_vpc.new_vpc.id[0]                      // vpc id 필요             >>>> 수정 필요
+  vpc_id = aws_vpc.new_vpc[0].id                      // vpc id 필요             >>>> 수정 필요
   tags = { Name = var.security_group_tag }
 }
 
@@ -94,8 +94,8 @@ resource "aws_instance" "instance" {
   instance_type = each.value.instance_type
   key_name      = data.aws_key_pair.kibo-aws-key-pair.key_name
   associate_public_ip_address = true
-  subnet_id                   = aws_subnet.new_subnet.id // var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01.id : aws_subnet.new_subnet.id 
-  vpc_security_group_ids      = [aws_security_group.sg.id] // string required [] 필요
+  subnet_id                   = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
+  vpc_security_group_ids      = var.is_portal_sg == true ? [data.aws_security_group.sg[0].id] : [aws_security_group.sg[0].id] // string required [] 필요
   tags                        = {
      Name = each.value.vm_name  // Name으로 해야 ec2 네임이 생성됨............name으로 하면 tag에만 보이고 네임이 없는 ec2가... 생성됨..
      }     //each.key로 하면 key값을 보고 NAME, tag가 생성됨  ec2_01,02 이렇게.. value의 vm_name으로 해야한다.          
