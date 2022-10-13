@@ -19,13 +19,13 @@ resource "aws_vpc" "new_vpc" {
 
 resource "aws_internet_gateway" "new_igw" {
   count = var.is_portal_vpc == false ? 1 : 0
-  vpc_id = aws_vpc.new_vpc.id[count.index]
+  vpc_id = aws_vpc.new_vpc.id[0]
   }
   
   
 resource "aws_route_table" "new_route_table" {
   count = var.is_portal_vpc == false ? 1 : 0
-  vpc_id = aws_vpc.new_vpc.id[count.index]
+  vpc_id = aws_vpc.new_vpc.id[0]
   }
   
 resource "aws_route" "new_route" {
@@ -38,7 +38,7 @@ resource "aws_route" "new_route" {
   
 resource "aws_subnet" "new_subnet" {
   count = var.is_portal_subnet == false ? 1 : 0
-  vpc_id                  = aws_vpc.new_vpc.id[count.index]
+  vpc_id                  = aws_vpc.new_vpc.id[0]
   cidr_block              = var.new_subnet_cidr_blocks
   availability_zone       = "ap-northeast-2a"
   map_public_ip_on_launch = "true"
