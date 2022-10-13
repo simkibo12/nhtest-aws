@@ -6,7 +6,7 @@ variable "secret_key" {}
 #variable "subnet_id" {}
 variable "vpc_name" {}
 variable "cidr_block" {}
-variable "public_subnet_cidr_blocks" {}
+variable "new_subnet_cidr_blocks" {}
 
 #SECURITY#
 #variable "security_group_id" {}
