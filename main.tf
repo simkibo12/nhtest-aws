@@ -94,7 +94,7 @@ resource "aws_instance" "instance" {
   instance_type = each.value.instance_type
   key_name      = data.aws_key_pair.kibo-aws-key-pair.key_name
   associate_public_ip_address = true
-  subnet_id                   = aws_subnet.new_subnet.id
+  subnet_id                   = aws_subnet.new_subnet.id // var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01.id : aws_subnet.new_subnet.id 
   vpc_security_group_ids      = [aws_security_group.sg.id] // string required [] 필요
   tags                        = {
      Name = each.value.vm_name  // Name으로 해야 ec2 네임이 생성됨............name으로 하면 tag에만 보이고 네임이 없는 ec2가... 생성됨..
