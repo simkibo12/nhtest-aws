@@ -32,10 +32,8 @@ resource "aws_route" "new_route" {
   
   
 resource "aws_subnet" "new_subnet" {
-  count = length(var.new_subnet_cidr_blocks)
-  
   vpc_id                  = aws_vpc.new_vpc.id
-  cidr_block              = var.new_subnet_cidr_blocks[count.index]
+  cidr_block              = var.new_subnet_cidr_blocks
 #   availability_zone       = var.availability_zones[count.index]
   map_public_ip_on_launch = "true"
   
@@ -43,9 +41,7 @@ resource "aws_subnet" "new_subnet" {
   
   
   resource "aws_route_table_association" "new_subnet_route_table_association" {
-    count = length(var.public_subnet_cidr_blocks)
-  
-    subnet_id      = aws_subnet.new_subnet[count.index].id
+    subnet_id      = aws_subnet.new_subnet.id
     route_table_id = aws_route_table.new_route_table.id
   }
 
@@ -62,7 +58,7 @@ resource "aws_security_group" "sg" {
   name = var.security_group_name
   description = var.security_group_description //"Allow TLS inbound traffic"
   vpc_id = aws_vpc.new_vpc.id                      // vpc id 필요             >>>> 수정 필요
-  tags = { Name = var.security_group_tag }
+  tags { Name = var.security_group_tag }
 }
 
 resource "aws_security_group_rule" "sg_rule"{
