@@ -161,8 +161,6 @@ resource "aws_lb" "nh_alb" {
   #subnets            = [var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id]
   #subnets            =  [for subnet in aws_subnet.new_subnet : subnet.id]
 
-
- enable_deletion_protection = true
   
    subnet_mapping {
     subnet_id            = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
