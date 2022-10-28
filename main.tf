@@ -227,4 +227,8 @@ resource "aws_nat_gateway" "nat-gw" {
 
 
 # TGW
-resource "aws_ec2_transit_gateway" "transit-gw" {}
+resource "aws_ec2_transit_gateway" "transit-gw" {
+    tags = {
+        name = nh-tgw-test
+    }
+}
