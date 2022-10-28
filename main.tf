@@ -46,7 +46,7 @@ resource "aws_route" "new_route" {
 resource "aws_subnet" "new_subnet" {
   count = var.is_portal_subnet == false ? 1 : 0
   vpc_id                  = var.is_portal_vpc == false ? aws_vpc.new_vpc[0].id : data.aws_vpc.selected.id
-  cidr_block              = var.new_subnet_cidr_blocks
+  cidr_block              = var.is_portal_subnet == false ? var.new_subnet_cidr_blocks : 0
   availability_zone       = "ap-northeast-2a"
   map_public_ip_on_launch = "true"
   
