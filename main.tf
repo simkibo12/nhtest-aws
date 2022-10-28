@@ -5,7 +5,11 @@ data "aws_subnet" "kibo-subnet-01" {
   id = var.subnet_id
 }
 
+data "aws_vpc" "selected" {
+  id = "vpc-03eede61a3b2599e1"
+}
 
+/*
 resource "aws_vpc" "new_vpc" {
   count = var.is_portal_vpc == false ? 1 : 0
   cidr_block           = var.cidr_block
@@ -16,6 +20,9 @@ resource "aws_vpc" "new_vpc" {
   Name = var.vpc_name
   }
 }
+*/
+
+  
 
 resource "aws_internet_gateway" "new_igw" {
   count = var.is_portal_vpc == false ? 1 : 0
@@ -140,10 +147,15 @@ resource "aws_lb" "nh_alb" {
   enable_deletion_protection = true
   
    subnet_mapping {
-   subnet_id            = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
-   #private_ipv4_address = "10.0.1.15"
+    subnet_id            = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
+    #private_ipv4_address = "10.0.1.15"
   }
-
+/*
+  subnet_mapping {
+    subnet_id            = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
+    #private_ipv4_address = "10.0.2.15"
+  }
+*/
   tags = {
     Environment = "production"
   }
