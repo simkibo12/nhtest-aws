@@ -130,7 +130,7 @@ resource "aws_volume_attachment" "data_disk_attachment" {
 
 # ALB
 
-resource "aws_lb" "nh_alb" {
+resource "aws_alb" "nh_alb" {
   name               = "nh-alb"
   internal           = false
   load_balancer_type = "application"
@@ -139,11 +139,18 @@ resource "aws_lb" "nh_alb" {
 
   enable_deletion_protection = true
 
-  access_logs {
-    bucket  = aws_s3_bucket.lb_logs.bucket
-    prefix  = "test-lb"
-    enabled = true
+  tags = {
+    Environment = "production"
   }
+}
+
+resource "aws_nlb" "nh_nlb" {
+  name               = "nh-nlb"
+  internal           = false
+  load_balancer_type = "network"
+  subnets            = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
+
+  enable_deletion_protection = true
 
   tags = {
     Environment = "production"
