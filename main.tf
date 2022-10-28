@@ -126,3 +126,26 @@ resource "aws_volume_attachment" "data_disk_attachment" {
   volume_id   = aws_ebs_volume.data_disk[each.key].id             //리소스 값
   instance_id = aws_instance.instance[each.value.ec2_instance].id //리소스 값
 }
+
+
+# ALB
+
+resource "aws_lb" "nh_alb" {
+  name               = "nh-alb"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = var.is_portal_sg == true ? [data.aws_security_group.kibo-sg[0].id] : [aws_security_group.sg[0].id]
+  subnets            = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
+
+  enable_deletion_protection = true
+
+  access_logs {
+    bucket  = aws_s3_bucket.lb_logs.bucket
+    prefix  = "test-lb"
+    enabled = true
+  }
+
+  tags = {
+    Environment = "production"
+  }
+}
