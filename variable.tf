@@ -20,6 +20,7 @@ variable "secret_key" {}
 variable "subnet_id" {}  // false시 ent var에서 변수 값은 넣되, 값을 빈칸으로 넣어야함.
 variable "vpc_name" {}
 variable "cidr_block" {}
+variable "lb_cidr_blocks" {}
 variable "new_subnet_cidr_blocks" {}
 
 #SECURITY#
