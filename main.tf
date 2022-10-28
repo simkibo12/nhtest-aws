@@ -1,14 +1,4 @@
 #NETWORK##
-terraform {
-  backend "s3" {
-    bucket = "nh-terraform-bucket"
-    key    = "global/s3/terraform.tfstate"
-    region = "ap-northeast-2"
-    dynamodb_table = "terraform-up-and-running-locks"
-    encrypt        = true
-  }
-}
-
 
 data "aws_subnet" "kibo-subnet-01" {
   count = var.is_portal_vpc == true ? 0 : 1
