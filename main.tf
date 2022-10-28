@@ -56,7 +56,7 @@ resource "aws_subnet" "new_subnet" {
   resource "aws_route_table_association" "new_subnet_route_table_association" {
     count = var.is_portal_subnet == false ? 1 : 0
     subnet_id      = aws_subnet.new_subnet[0].id
-    route_table_id = var.is_protal_subnet == false ? aws_route_table.new_route_table[0].id : 0
+    route_table_id = var.is_portal_subnet == false ? aws_route_table.new_route_table[0].id : 0
   }
 
 
