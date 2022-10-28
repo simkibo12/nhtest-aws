@@ -169,13 +169,13 @@ resource "aws_lb" "nh_alb" {
     #private_ipv4_address = "10.0.1.15"
   }
 
-
-
  subnet_mapping {
     subnet_id            = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.lb_subnet[0].id
     #private_ipv4_address = "10.0.2.15"
   }
 
+  enable_deletion_protection = false
+  
   tags = {
     Environment = "production"
   }
