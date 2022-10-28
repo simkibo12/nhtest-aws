@@ -140,3 +140,60 @@ resource "aws_volume_attachment" "data_disk_attachment" {
 }
 
 
+# ALB
+
+
+
+resource "aws_lb" "nh_alb" {
+  name               = "nh-alb"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = var.is_portal_sg == true ? [data.aws_security_group.kibo-sg[0].id] : [aws_security_group.sg[0].id]
+  #subnets            = [var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id]
+  subnets            =  [for subnet in aws_subnet.new_subnet : subnet.id]
+
+
+ enable_deletion_protection = true
+  /*
+   subnet_mapping {
+    subnet_id            = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
+    #private_ipv4_address = "10.0.1.15"
+  }
+
+
+
+ subnet_mapping {
+    subnet_id            = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
+    #private_ipv4_address = "10.0.2.15"
+  }
+*/
+  tags = {
+    Environment = "production"
+  }
+}
+
+
+
+resource "aws_lb" "nh_nlb" {
+  name               = "nh-nlb"
+  internal           = false
+  load_balancer_type = "network"
+  subnets            = [var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id]
+
+
+
+ enable_deletion_protection = false
+
+
+
+ tags = {
+    Environment = "production"
+  }
+}
+
+
+
+resource "aws_nat_gateway" "nat-gw" {
+  connectivity_type = "private"
+  subnet_id         = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
+}
