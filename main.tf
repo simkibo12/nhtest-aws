@@ -163,7 +163,7 @@ resource "aws_s3_bucket" "terraform-state" {
 
 # object
 resource "aws_s3_bucket_object" "object" {
-  bucket = "nh-object"
+  bucket = "nh-terraform-bucket"
   key    = "Folder1/"
   source = "/dev/null"
 }
