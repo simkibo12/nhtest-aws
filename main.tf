@@ -56,7 +56,7 @@ resource "aws_subnet" "new_subnet" {
   resource "aws_route_table_association" "new_subnet_route_table_association" {
     count = var.is_portal_subnet == false ? 1 : 0
     subnet_id      = aws_subnet.new_subnet[0].id
-    route_table_id = var.is_portal_vpc == false ? aws_route_table.new_route_table[0].id : 0 
+    route_table_id = var.is_portal_vpc == false ? aws_route_table.new_route_table[0].id : data.aws_vpc.selected.id
   }
 
 
@@ -145,12 +145,12 @@ resource "aws_lb" "nh_alb" {
   subnets            = [var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id]
 
   enable_deletion_protection = true
-  
+  /*
    subnet_mapping {
     subnet_id            = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
     #private_ipv4_address = "10.0.1.15"
   }
-/*
+
   subnet_mapping {
     subnet_id            = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
     #private_ipv4_address = "10.0.2.15"
