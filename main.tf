@@ -167,7 +167,7 @@ resource "aws_lb" "nh_nlb" {
   load_balancer_type = "network"
   subnets            = [var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id]
 
-  enable_deletion_protection = true
+  enable_deletion_protection = false
 
   tags = {
     Environment = "production"
