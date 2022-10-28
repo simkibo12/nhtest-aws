@@ -10,7 +10,7 @@ data "aws_vpc" "selected" {
 }
 
 data "aws_route_table" "portal_route_table" {
-  #count = var.is_portal_subnet == false ? 0 : 1
+  count = var.is_portal_subnet == false ? 0 : 1
   subnet_id = "subnet-00c1b8261e962d8be"
 }
 
@@ -60,7 +60,7 @@ resource "aws_subnet" "new_subnet" {
   resource "aws_route_table_association" "new_subnet_route_table_association" {
     count = var.is_portal_subnet == false ? 1 : 0
     subnet_id      = aws_subnet.new_subnet[0].id
-    route_table_id = var.is_portal_vpc == false ? aws_route_table.new_route_table[0].id : data.aws_route_table.portal_route_table.id
+    route_table_id = var.is_portal_vpc == false ? aws_route_table.new_route_table[0].id : data.aws_route_table.portal_route_table[0].id
   }
 
 
