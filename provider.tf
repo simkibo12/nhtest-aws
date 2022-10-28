@@ -5,6 +5,13 @@ terraform {
       version = "4.33.0"
     }
   }
+   backend "s3" {
+    bucket = "nh-terraform-bucket"
+    key    = "global/s3/terraform.tfstate"
+    region = "ap-northeast-2"
+    dynamodb_table = "terraform-up-and-running-locks"
+    encrypt        = true
+  }
 }
 
 provider "aws"{
