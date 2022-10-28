@@ -26,13 +26,13 @@ resource "aws_vpc" "new_vpc" {
 
 resource "aws_internet_gateway" "new_igw" {
   count = var.is_portal_vpc == false ? 1 : 0
-  vpc_id = aws_vpc.new_vpc[0].id
+  vpc_id = var.is_portal_vpc == false ? aws_vpc.new_vpc[0].id : data.aws_vpc.selected.id      
   }
   
   
 resource "aws_route_table" "new_route_table" {
   count = var.is_portal_vpc == false ? 1 : 0
-  vpc_id = aws_vpc.new_vpc[0].id
+  vpc_id = var.is_portal_vpc == false ? aws_vpc.new_vpc[0].id : data.aws_vpc.selected.id      
   }
   
 resource "aws_route" "new_route" {
@@ -73,7 +73,7 @@ resource "aws_security_group" "sg" {
   count = var.is_portal_sg == false ? 1 : 0
   name = var.security_group_name
   description = var.security_group_description //"Allow TLS inbound traffic"
-  vpc_id = aws_vpc.new_vpc[0].id                      // vpc id 필요             >>>> 수정 필요
+  vpc_id = var.is_portal_vpc == false ? aws_vpc.new_vpc[0].id : data.aws_vpc.selected.id         
   tags = { Name = var.security_group_tag }
 }
 
