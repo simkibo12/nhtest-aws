@@ -172,7 +172,7 @@ resource "aws_lb" "nh_alb" {
 
 
  subnet_mapping {
-    subnet_id            = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.lb.subnet[0].id
+    subnet_id            = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.lb_subnet[0].id
     #private_ipv4_address = "10.0.2.15"
   }
 
