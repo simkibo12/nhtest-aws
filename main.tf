@@ -9,9 +9,6 @@ data "aws_vpc" "selected" {
   id = "vpc-03eede61a3b2599e1"
 }
 
-data "aws_route_table" "selected-route-table" {
-  subnet_id = var.subnet_id
-}
 
 resource "aws_vpc" "new_vpc" {
   count = var.is_portal_vpc == false ? 1 : 0
