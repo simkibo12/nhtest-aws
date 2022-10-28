@@ -138,6 +138,11 @@ resource "aws_lb" "nh_alb" {
   subnets            = [var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id]
 
   enable_deletion_protection = true
+  
+   subnet_mapping {
+   subnet_id            = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
+   #private_ipv4_address = "10.0.1.15"
+  }
 
   tags = {
     Environment = "production"
