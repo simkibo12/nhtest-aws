@@ -168,15 +168,6 @@ resource "aws_s3_bucket_object" "object" {
   source = "/dev/null"
 }
 
-terraform {
-  backend "s3" {
-    bucket = "nh-terraform-bucket"
-    key    = "Folder1/terraform.tfstate"
-    region = "ap-northeast-2"
-  }
-}
-
-
 
 # ALB
 
