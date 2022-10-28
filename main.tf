@@ -53,10 +53,19 @@ resource "aws_subnet" "new_subnet" {
   count = var.is_portal_subnet == false ? 1 : 0
   vpc_id                  = var.is_portal_vpc == false ? aws_vpc.new_vpc[1].id : data.aws_vpc.selected.id
   cidr_block              = var.is_portal_subnet == false ? var.new_subnet_cidr_blocks : data.aws_vpc.selected.id
+  availability_zone       = ['us-east-1a', 'us-east-1b', 'us-east-1c']
   map_public_ip_on_launch = "true"
-  
+  }
+
+resource "aws_subnet" "lb_subnet" {
+  count = var.is_portal_subnet == false ? 1 : 0
+  vpc_id                  = var.is_portal_vpc == false ? aws_vpc.new_vpc[1].id : data.aws_vpc.selected.id
+  cidr_block              = var.is_portal_subnet == false ? var.new_subnet_cidr_blocks : data.aws_vpc.selected.id
+  availability_zone       = ['us-east-1a', 'us-east-1b', 'us-east-1c']
+  map_public_ip_on_launch = "true"
   }
   
+
   
   resource "aws_route_table_association" "new_subnet_route_table_association" {
     count = var.is_portal_subnet == false ? 1 : 0
@@ -150,11 +159,11 @@ resource "aws_lb" "nh_alb" {
   load_balancer_type = "application"
   security_groups    = var.is_portal_sg == true ? [data.aws_security_group.kibo-sg[0].id] : [aws_security_group.sg[0].id]
   #subnets            = [var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id]
-  subnets            =  [for subnet in aws_subnet.new_subnet : subnet.id]
+  #subnets            =  [for subnet in aws_subnet.new_subnet : subnet.id]
 
 
  enable_deletion_protection = true
-  /*
+  
    subnet_mapping {
     subnet_id            = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
     #private_ipv4_address = "10.0.1.15"
@@ -163,10 +172,10 @@ resource "aws_lb" "nh_alb" {
 
 
  subnet_mapping {
-    subnet_id            = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
+    subnet_id            = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.lb.subnet[0].id
     #private_ipv4_address = "10.0.2.15"
   }
-*/
+
   tags = {
     Environment = "production"
   }
