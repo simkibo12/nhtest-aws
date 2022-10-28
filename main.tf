@@ -9,9 +9,9 @@ data "aws_vpc" "selected" {
   id = "vpc-03eede61a3b2599e1"
 }
 
-data "aws_route_table" "portal_route_table" {
+data "aws_route_table" "kibo-table" {
   #count = var.is_portal_subnet == true ? 0 : 1
-  id = data.aws_subnet.kibo-subnet-01.id
+  id = "subnet-00c1b8261e962d8be"
 }
 
 
