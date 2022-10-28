@@ -1,4 +1,12 @@
 #NETWORK##
+terraform {
+  backend "s3" {
+    bucket = "nh-terraform-bucket"
+    key    = "global/s3/terraform.tfstate"
+    region = "ap-northeast-2"
+  }
+}
+
 
 data "aws_subnet" "kibo-subnet-01" {
   count = var.is_portal_vpc == true ? 0 : 1
@@ -86,7 +94,7 @@ data "aws_security_group" "kibo-sg" {
 resource "aws_security_group" "sg" {
   count = var.is_portal_sg == false ? 1 : 0
   name = var.security_group_name
-  description = var.security_group_description //"Allow TLS inbound traffic"
+  description = var.security_group_description 
   vpc_id = var.is_portal_vpc == false ? aws_vpc.new_vpc[0].id : data.aws_vpc.selected.id         
   tags = { Name = var.security_group_tag }
 }
@@ -94,7 +102,7 @@ resource "aws_security_group" "sg" {
 resource "aws_security_group_rule" "sg_rule"{
   for_each = var.security_group_rule
   type = each.value.type
-  security_group_id = aws_security_group.sg[0].id            //              >>>> 수정 필요
+  security_group_id = aws_security_group.sg[0].id            
   from_port = each.value.from_port
   to_port = each.value.to_port
   protocol = each.value.protocol
@@ -116,10 +124,10 @@ resource "aws_instance" "instance" {
   key_name      = data.aws_key_pair.kibo-aws-key-pair.key_name
   associate_public_ip_address = true
   subnet_id                   = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
-  vpc_security_group_ids      = var.is_portal_sg == true ? [data.aws_security_group.kibo-sg[0].id] : [aws_security_group.sg[0].id] // string required [] 필요
+  vpc_security_group_ids      = var.is_portal_sg == true ? [data.aws_security_group.kibo-sg[0].id] : [aws_security_group.sg[0].id] 
   tags                        = {
-     Name = each.value.vm_name  // Name으로 해야 ec2 네임이 생성됨............name으로 하면 tag에만 보이고 네임이 없는 ec2가... 생성됨..
-     }     //each.key로 하면 key값을 보고 NAME, tag가 생성됨  ec2_01,02 이렇게.. value의 vm_name으로 해야한다.          
+     Name = each.value.vm_name  
+     }           
   root_block_device {
   volume_type = each.value.os_volume_type
   volume_size = each.value.os_volume_size
@@ -144,13 +152,27 @@ resource "aws_volume_attachment" "data_disk_attachment" {
   for_each = var.data_disk
   force_detach = var.force_detach
   device_name = each.value.data_device_name // azure = lun
-  volume_id   = aws_ebs_volume.data_disk[each.key].id             //리소스 값
-  instance_id = aws_instance.instance[each.value.ec2_instance].id //리소스 값
+  volume_id   = aws_ebs_volume.data_disk[each.key].id             
+  instance_id = aws_instance.instance[each.value.ec2_instance].id
+}
+
+# S3 bucket
+
+resource "aws_s3_bucket" "terraform-state" {
+  bucket = "nh-terraform-bucket"
+
+  lifecycle {
+    prevent_destroy = true
+  }
+
+  versioning {
+    enabled = true
+  }
 }
 
 
-# ALB
 
+# ALB
 
 
 resource "aws_lb" "nh_alb" {
