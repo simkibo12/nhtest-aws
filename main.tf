@@ -11,7 +11,7 @@ data "aws_vpc" "selected" {
 
 data "aws_route_table" "portal_route_table" {
   count = var.is_portal_subnet == false ? 0 : 1
-  subnet_id = "subnet-00c1b8261e962d8be"
+  route_table_id = "rtb-06a01e00dd5d0930d"
 }
 
 
@@ -37,7 +37,8 @@ resource "aws_internet_gateway" "new_igw" {
   
 resource "aws_route_table" "new_route_table" {
   count = var.is_portal_vpc == false ? 1 : 0
-  vpc_id = var.is_portal_vpc == false ? aws_vpc.new_vpc[0].id : data.aws_vpc.selected.id 
+  vpc_id = var.is_portal_vpc == false ? aws_vpc.new_vpc[0].id : data.aws_vpc.selected.id
+  route = []
   }
   
 resource "aws_route" "new_route" {
@@ -60,7 +61,7 @@ resource "aws_subnet" "new_subnet" {
   resource "aws_route_table_association" "new_subnet_route_table_association" {
     count = var.is_portal_subnet == false ? 1 : 0
     subnet_id      = aws_subnet.new_subnet[0].id
-    route_table_id = var.is_portal_vpc == false ? aws_route_table.new_route_table[0].id : data.aws_route_table.portal_route_table[0].id
+    route_table_id = var.is_portal_subnet == false ? aws_route_table.new_route_table[0].id : data.aws_route_table.portal_route_table[0].id
   }
 
 
