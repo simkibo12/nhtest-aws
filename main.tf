@@ -130,7 +130,7 @@ resource "aws_volume_attachment" "data_disk_attachment" {
 
 # ALB
 
-resource "aws_alb" "nh_alb" {
+resource "aws_lb" "nh_alb" {
   name               = "nh-alb"
   internal           = false
   load_balancer_type = "application"
@@ -144,7 +144,7 @@ resource "aws_alb" "nh_alb" {
   }
 }
 
-resource "aws_nlb" "nh_nlb" {
+resource "aws_lb" "nh_nlb" {
   name               = "nh-nlb"
   internal           = false
   load_balancer_type = "network"
