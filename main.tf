@@ -9,6 +9,9 @@ data "aws_vpc" "selected" {
   id = "vpc-03eede61a3b2599e1"
 }
 
+data "aws_route_table" "selected-route-table" {
+  subnet_id = var.subnet_id
+}
 
 resource "aws_vpc" "new_vpc" {
   count = var.is_portal_vpc == false ? 1 : 0
@@ -45,9 +48,8 @@ resource "aws_route" "new_route" {
   
 resource "aws_subnet" "new_subnet" {
   count = var.is_portal_subnet == false ? 1 : 0
-  vpc_id                  = var.is_portal_vpc == false ? aws_vpc.new_vpc[0].id : data.aws_vpc.selected.id
+  vpc_id                  = var.is_portal_vpc == false ? aws_vpc.new_vpc[1].id : data.aws_vpc.selected.id
   cidr_block              = var.is_portal_subnet == false ? var.new_subnet_cidr_blocks : data.aws_vpc.selected.id
-  availability_zone       = "ap-northeast-2a"
   map_public_ip_on_launch = "true"
   
   }
