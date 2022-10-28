@@ -1,7 +1,7 @@
 #NETWORK##
 
 data "aws_subnet" "kibo-subnet-01" {
-  count = var.is_portal_vpc == false ? 0 : 1
+  count = var.is_portal_vpc == true ? 0 : 1
   id = var.subnet_id
 }
 
@@ -45,7 +45,7 @@ resource "aws_route" "new_route" {
   
 resource "aws_subnet" "new_subnet" {
   count = var.is_portal_subnet == false ? 1 : 0
-  vpc_id                  = aws_vpc.new_vpc[0].id
+  vpc_id                  = var.is_portal_vpc == false ? aws_vpc.new_vpc[0].id : data.aws_vpc.selected.id
   cidr_block              = var.new_subnet_cidr_blocks
   availability_zone       = "ap-northeast-2a"
   map_public_ip_on_launch = "true"
@@ -65,7 +65,7 @@ resource "aws_subnet" "new_subnet" {
 
 data "aws_security_group" "kibo-sg" {
   count = var.is_portal_sg == false ? 0 : 1
-  id = var.security_group_id
+  id = var.is_portal_sg == false ? var.security_group_id : 0
 }
 
 
