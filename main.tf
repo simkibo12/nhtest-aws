@@ -32,7 +32,7 @@ resource "aws_internet_gateway" "new_igw" {
   
 resource "aws_route_table" "new_route_table" {
   count = var.is_portal_vpc == false ? 1 : 0
-  vpc_id = var.is_portal_vpc == false ? data.aws_vpc.selected.id : aws_vpc.new_vpc[0].id
+  vpc_id = var.is_portal_vpc == false ? aws_vpc.new_vpc[0].id : data.aws_vpc.selected.id 
   }
   
 resource "aws_route" "new_route" {
