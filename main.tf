@@ -9,7 +9,7 @@ data "aws_vpc" "selected" {
   id = "vpc-03eede61a3b2599e1"
 }
 
-/*
+
 resource "aws_vpc" "new_vpc" {
   count = var.is_portal_vpc == false ? 1 : 0
   cidr_block           = var.cidr_block
@@ -20,7 +20,7 @@ resource "aws_vpc" "new_vpc" {
   Name = var.vpc_name
   }
 }
-*/
+
 
   
 
