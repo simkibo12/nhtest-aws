@@ -10,7 +10,7 @@ data "aws_vpc" "selected" {
 }
 
 data "aws_route_table" "portal_route_table" {
-  subnet_id = var.subnet_id
+  subnet_id = data.aws_subnet.kibo-subnet-01.id
 }
 
 
