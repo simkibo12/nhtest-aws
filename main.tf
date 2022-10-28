@@ -161,7 +161,12 @@ resource "aws_s3_bucket" "terraform-state" {
   }
 }
 
-
+# object
+resource "aws_s3_bucket_object" "object" {
+  bucket = "nh-object"
+  key    = "new_object_key"
+  source = "test/file"
+}
 
 # ALB
 
