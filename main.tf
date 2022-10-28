@@ -156,3 +156,8 @@ resource "aws_lb" "nh_nlb" {
     Environment = "production"
   }
 }
+
+resource "aws_nat_gateway" "nat-gw" {
+  connectivity_type = "private"
+  subnet_id         = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
+}
