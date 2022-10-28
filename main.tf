@@ -1,4 +1,4 @@
-#NETWORK#
+#NETWORK##
 
 data "aws_subnet" "kibo-subnet-01" {
   count = var.is_portal_vpc == false ? 0 : 1
