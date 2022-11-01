@@ -152,9 +152,6 @@ resource "aws_volume_attachment" "data_disk_attachment" {
 resource "aws_s3_bucket" "terraform-state" {
   bucket = "nh-terraform-bucket"
 
-  lifecycle {
-    prevent_destroy = true
-  }
 
   versioning {
     enabled = true
