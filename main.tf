@@ -158,13 +158,14 @@ resource "aws_s3_bucket" "terraform-state" {
     enabled = true
   }
 }
-
+/*
 # object
 resource "aws_s3_bucket_object" "object" {
   bucket = "nh-terraform-bucket"
   key    = "Folder1/"
   source = "/dev/null"
 }
+*/
 
 
 # ALB
