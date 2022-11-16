@@ -116,6 +116,7 @@ resource "aws_instance" "instance" {
   associate_public_ip_address = true
   subnet_id                   = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
   vpc_security_group_ids      = var.is_portal_sg == true ? [data.aws_security_group.kibo-sg[0].id] : [aws_security_group.sg[0].id] 
+  disable_api_termination = true
   tags                        = {
      Name = each.value.vm_name  
      }           
