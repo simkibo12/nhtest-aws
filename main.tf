@@ -150,17 +150,27 @@ resource "aws_volume_attachment" "data_disk_attachment" {
 
 # S3 bucket
 
-resource "aws_s3_bucket" "terraform-state" {
+resource "aws_s3_bucket" "s3-bucket" {
   bucket = "nh-terraform-bucket"
+}
 
+resource "aws_s3_bucket_versioning" "version_ex" {
+  bucket = aws_s3_bucket.s3-bucket.id
 
-  versioning {
-    enabled = true
+  versioning_configuration {
+    status = "Enabled"
   }
 }
 
-# object
+/*
 resource "aws_s3_bucket_object" "object" {
+  bucket = "nh-terraform-bucket"
+  key    = "Folder1/"
+  source = "/dev/null"
+}
+*/
+# object
+resource "aws_s3_object" "object" {
   bucket = "nh-terraform-bucket"
   key    = "Folder1/"
   source = "/dev/null"
