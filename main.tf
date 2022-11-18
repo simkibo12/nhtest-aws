@@ -161,16 +161,10 @@ resource "aws_s3_bucket_versioning" "version_ex" {
   }
 }
 
-/*
-resource "aws_s3_bucket_object" "object" {
-  bucket = "nh-terraform-bucket"
-  key    = "Folder1/"
-  source = "/dev/null"
-}
-*/
-# object
+
+# S3 object
 resource "aws_s3_object" "object" {
-  bucket = "nh-terraform-bucket"
+  bucket = aws_s3_bucket.s3-bucket.id
   key    = "Folder1/"
   source = "/dev/null"
 }
