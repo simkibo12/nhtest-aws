@@ -83,7 +83,8 @@ resource "aws_subnet" "lb_subnet" {
     ##count = var.is_portal_subnet == false ? 1 : 0
     count = var.is_portal_subnet == true ? 1 : 0
     subnet_id      = aws_subnet.new_subnet[0].id
-    route_table_id = var.is_portal_subnet == false ? aws_route_table.new_route_table[0].id : data.aws_route_table.portal_route_table[0].id
+    ##route_table_id = var.is_portal_subnet == false ? aws_route_table.new_route_table[0].id : data.aws_route_table.portal_route_table[0].id
+    route_table_id = var.is_portal_subnet == true ? aws_route_table.new_route_table[0].id : data.aws_route_table.portal_route_table[0].id
   }
 
 
