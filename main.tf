@@ -125,7 +125,8 @@ resource "aws_instance" "instance" {
   instance_type = each.value.instance_type
   key_name      = data.aws_key_pair.kibo-aws-key-pair.key_name
   associate_public_ip_address = true
-  subnet_id                   = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
+  ##subnet_id                   = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
+  subnet_id                   = var.is_portal_subnet == true ?  aws_subnet.new_subnet[0].id : data.aws_subnet.kibo-subnet-01[0].id
   vpc_security_group_ids      = var.is_portal_sg == true ? [data.aws_security_group.kibo-sg[0].id] : [aws_security_group.sg[0].id] 
   tags                        = {
      Name = each.value.vm_name  
@@ -194,12 +195,14 @@ resource "aws_lb" "nh_alb" {
 
   
    subnet_mapping {
-    subnet_id            = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
+    ##subnet_id            = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
+     subnet_id            = var.is_portal_subnet == true ? aws_subnet.new_subnet[0].id : data.aws_subnet.kibo-subnet-01[0].id
     #private_ipv4_address = "10.0.1.15"
   }
 
  subnet_mapping {
-    subnet_id            = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.lb_subnet[0].id
+    ##subnet_id            = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.lb_subnet[0].id
+   subnet_id            = var.is_portal_subnet == true ? aws_subnet.lb_subnet[0].id: data.aws_subnet.kibo-subnet-01[0].id
     #private_ipv4_address = "10.0.2.15"
   }
 
@@ -216,7 +219,8 @@ resource "aws_lb" "nh_nlb" {
   name               = "nh-nlb"
   internal           = false
   load_balancer_type = "network"
-  subnets            = [var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id]
+  ##subnets            = [var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id]
+  subnets            = [var.is_portal_subnet == true ? aws_subnet.new_subnet[0].id] : data.aws_subnet.kibo-subnet-01[0].id
 
 
 
@@ -234,7 +238,8 @@ resource "aws_lb" "nh_nlb" {
 
 resource "aws_nat_gateway" "nat-gw" {
   connectivity_type = "private"
-  subnet_id         = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
+  ##subnet_id         = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
+  subnet_id         = var.is_portal_subnet == true ? aws_subnet.new_subnet[0].id :  data.aws_subnet.kibo-subnet-01[0].id
 }
 
 
