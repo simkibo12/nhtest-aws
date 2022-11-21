@@ -7,7 +7,7 @@ data "aws_subnet" "kibo-subnet-01" {
 
 data "aws_vpc" "selected" {
  id = "vpc-03eede61a3b2599e1"
-  cidr_block = cidrsubnet(data.aws_vpc.selected.cidr_block, 4, 1)
+  cidr_block = "10.0.0.0/16"
 }
 
 
