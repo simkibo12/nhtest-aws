@@ -4,11 +4,12 @@ data "aws_subnet" "kibo-subnet-01" {
   count = var.is_portal_vpc == true ? 0 : 1
   id = "subnet-00c1b8261e962d8be"
 }
-
+/*
 data "aws_vpc" "selected" {
  id = "vpc-03eede61a3b2599e1"
   cidr_block = "10.0.0.0/16"
 }
+*/
 
 
 
@@ -61,7 +62,7 @@ resource "aws_subnet" "new_subnet" {
   ##vpc_id                  = var.is_portal_vpc == false ? aws_vpc.new_vpc[0].id : data.aws_vpc.selected.id
   vpc_id                  = var.is_portal_vpc == false ? aws_vpc.new_vpc[0].id : "vpc-03eede61a3b2599e1"
   ##cidr_block              = var.is_portal_subnet == false ? var.new_subnet_cidr_blocks : data.aws_vpc.selected.id
-  cidr_block              = var.is_portal_subnet == false ? var.new_subnet_cidr_blocks : data.aws_vpc.selected.cidr_block
+  cidr_block              = var.is_portal_subnet == false ? var.new_subnet_cidr_blocks : "vpc-03eede61a3b2599e1"
   availability_zone       = "ap-northeast-2a"
   map_public_ip_on_launch = "true"
   }
@@ -72,7 +73,7 @@ resource "aws_subnet" "lb_subnet" {
   #vpc_id                  = var.is_portal_vpc == false ? aws_vpc.new_vpc[0].id : data.aws_vpc.selected.id
   vpc_id                  = var.is_portal_vpc == false ? aws_vpc.new_vpc[0].id : "vpc-03eede61a3b2599e1"
   #cidr_block              = var.is_portal_subnet == false ? var.lb_cidr_blocks : data.aws_vpc.selected.id
-  cidr_block              = var.is_portal_subnet == false ? var.lb_cidr_blocks : data.aws_vpc.selected.cidr_block
+  cidr_block              = var.is_portal_subnet == false ? var.lb_cidr_blocks : "vpc-03eede61a3b2599e1"
   availability_zone       = "ap-northeast-2b"
   map_public_ip_on_launch = "true"
   }
