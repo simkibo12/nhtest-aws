@@ -220,7 +220,7 @@ resource "aws_lb" "nh_nlb" {
   internal           = false
   load_balancer_type = "network"
   ##subnets            = [var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id]
-  subnets            = [var.is_portal_subnet == true ? aws_subnet.new_subnet[0].id] : data.aws_subnet.kibo-subnet-01[0].id
+  subnets            = [var.is_portal_subnet == true ? aws_subnet.new_subnet[0].id : data.aws_subnet.kibo-subnet-01[0].id]
 
 
 
