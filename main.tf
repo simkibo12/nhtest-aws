@@ -6,6 +6,7 @@ data "aws_subnet" "kibo-subnet-01" {
 }
 /*
 data "aws_vpc" "selected" {
+  name = "프로젝트-vpc"
   id = "vpc-03eede61a3b2599e1"
 }
 */
