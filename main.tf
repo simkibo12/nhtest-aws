@@ -4,12 +4,12 @@ data "aws_subnet" "kibo-subnet-01" {
   count = var.is_portal_vpc == true ? 0 : 1
   id = "subnet-00c1b8261e962d8be"
 }
-/*
+
 data "aws_vpc" "selected" {
   name = "프로젝트-vpc"
   id = "vpc-03eede61a3b2599e1"
 }
-*/
+
 
 data "aws_route_table" "portal_route_table" {
   count = var.is_portal_subnet == false ? 0 : 1
