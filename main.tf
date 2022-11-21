@@ -6,9 +6,10 @@ data "aws_subnet" "kibo-subnet-01" {
 }
 
 data "aws_vpc" "selected" {
-  name = "프로젝트-vpc"
-  id = "vpc-03eede61a3b2599e1"
+ id = "vpc-03eede61a3b2599e1"
+  cidr_block = cidrsubnet(data.aws_vpc.selected.cidr_block, 4, 1)
 }
+
 
 
 data "aws_route_table" "portal_route_table" {
@@ -57,7 +58,7 @@ resource "aws_subnet" "new_subnet" {
   #vpc_id                  = var.is_portal_vpc == false ? aws_vpc.new_vpc[0].id : data.aws_vpc.selected.id
   vpc_id                  = var.is_portal_vpc == false ? aws_vpc.new_vpc[0].id : "vpc-03eede61a3b2599e1"
   #cidr_block              = var.is_portal_subnet == false ? var.new_subnet_cidr_blocks : data.aws_vpc.selected.id
-  cidr_block              = var.is_portal_subnet == false ? var.new_subnet_cidr_blocks : "vpc-03eede61a3b2599e1"
+  cidr_block              = var.is_portal_subnet == false ? var.new_subnet_cidr_blocks : data.aws_vpc.selected.cidr_blocks
   availability_zone       = "ap-northeast-2a"
   map_public_ip_on_launch = "true"
   }
@@ -67,7 +68,7 @@ resource "aws_subnet" "lb_subnet" {
   #vpc_id                  = var.is_portal_vpc == false ? aws_vpc.new_vpc[0].id : data.aws_vpc.selected.id
   vpc_id                  = var.is_portal_vpc == false ? aws_vpc.new_vpc[0].id : "vpc-03eede61a3b2599e1"
   #cidr_block              = var.is_portal_subnet == false ? var.lb_cidr_blocks : data.aws_vpc.selected.id
-  cidr_block              = var.is_portal_subnet == false ? var.lb_cidr_blocks : "vpc-03eede61a3b2599e1"
+  cidr_block              = var.is_portal_subnet == false ? var.lb_cidr_blocks : data.aws_vpc.selected.cidr_blocks
   availability_zone       = "ap-northeast-2b"
   map_public_ip_on_launch = "true"
   }
@@ -92,6 +93,7 @@ data "aws_security_group" "kibo-sg" {
 
 resource "aws_security_group" "sg" {
   count = var.is_portal_sg == false ? 1 : 0
+  #name = var.security_group_name
   name = var.security_group_name
   description = var.security_group_description 
   #vpc_id = var.is_portal_vpc == false ? aws_vpc.new_vpc[0].id : data.aws_vpc.selected.id         
