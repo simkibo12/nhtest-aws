@@ -30,7 +30,8 @@ resource "aws_vpc" "new_vpc" {
 
 resource "aws_internet_gateway" "new_igw" {
   count = var.is_portal_vpc == false ? 1 : 0
-  vpc_id = var.is_portal_vpc == false ? aws_vpc.new_vpc[0].id : data.aws_vpc.selected.id      
+  #vpc_id = var.is_portal_vpc == false ? aws_vpc.new_vpc[0].id : data.aws_vpc.selected.id      
+  vpc_id = var.is_portal_vpc == false ? aws_vpc.new_vpc[0].id : "vpc-03eede61a3b2599e1"
   }
   
   
