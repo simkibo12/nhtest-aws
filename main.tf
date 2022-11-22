@@ -118,7 +118,7 @@ resource "aws_instance" "instance" {
   vpc_security_group_ids      = var.is_portal_sg == true ? [data.aws_security_group.kibo-sg[0].id] : [aws_security_group.sg[0].id] 
   
   tags                        = {
-     Name = "slee"
+     Name = each.value.vm_name
      }
   root_block_device {
   volume_type = each.value.os_volume_type
