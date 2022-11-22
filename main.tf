@@ -116,10 +116,11 @@ resource "aws_instance" "instance" {
   associate_public_ip_address = true
   subnet_id                   = var.is_portal_subnet == true ? data.aws_subnet.kibo-subnet-01[0].id : aws_subnet.new_subnet[0].id
   vpc_security_group_ids      = var.is_portal_sg == true ? [data.aws_security_group.kibo-sg[0].id] : [aws_security_group.sg[0].id] 
-  
+  /*
   tags                        = {
      Name = each.value.vm_name
      }
+  */
   root_block_device {
   volume_type = each.value.os_volume_type
   volume_size = each.value.os_volume_size
