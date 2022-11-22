@@ -1,3 +1,7 @@
+221122 
+
+
+
 1. ncp server 샐성 + is_portal(          )
 -  os에 disk 마운트 시에는 인스턴스 정지 시에만, 디스크 detach가 가능함. os에 디스크가 마운트 되어 있지 않다면, disk 추가 제거 가능 (자동으로 인스턴스 중지 하고 detach하는 옵션이 있음.*stop_instance_before_detaching)
 -  인스턴스 실행 중에도, 디스크 연결은 가능함.
