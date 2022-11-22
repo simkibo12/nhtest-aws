@@ -4,12 +4,10 @@ data "aws_subnet" "kibo-subnet-01" {
   count = var.is_portal_vpc == true ? 0 : 1
   id = "subnet-00c1b8261e962d8be"
 }
-/*
+
 data "aws_vpc" "selected" {
  id = "vpc-03eede61a3b2599e1"
-  cidr_block = "10.0.0.0/16"
 }
-*/
 
 
 
