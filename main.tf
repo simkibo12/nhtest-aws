@@ -122,9 +122,11 @@ resource "aws_instance" "instance" {
   root_block_device {
   volume_type = each.value.os_volume_type
   volume_size = each.value.os_volume_size
+    /*
     tags = {
       Name = each.value.os_disk_name
     }
+    */
   }  
   depends_on = [aws_security_group.sg,aws_security_group_rule.sg_rule]
 }
