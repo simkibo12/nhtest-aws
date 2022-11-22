@@ -171,7 +171,7 @@ resource "aws_s3_object" "object" {
   source = "/dev/null"
 }
 
-
+/*
 # ALB
 
 
@@ -235,3 +235,4 @@ resource "aws_ec2_transit_gateway" "transit-gw" {
         name = "nh-tgw-test"
     }
 }
+*/
