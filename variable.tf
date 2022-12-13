@@ -54,7 +54,7 @@ variable "ec2_instance" {
     instance_type  = string
     os_volume_type = string
     os_volume_size = number
-    security_groups = list(string)
+    #security_groups = list(string)
   }))
 }
 
