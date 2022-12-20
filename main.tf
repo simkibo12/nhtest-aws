@@ -152,7 +152,7 @@ resource "aws_volume_attachment" "data_disk_attachment" {
 # S3 bucket
 
 resource "aws_s3_bucket" "s3-bucket" {
-  bucket = "nh-terraform-bucket"
+  bucket = "nh-terraform-bucket22"
 }
 
 resource "aws_s3_bucket_versioning" "version_ex" {
