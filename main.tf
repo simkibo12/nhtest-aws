@@ -236,3 +236,23 @@ resource "aws_ec2_transit_gateway" "transit-gw" {
     }
 }
 */
+  
+
+resource "aws_route53_zone" "route53_zone" {
+        name = var.name
+}
+
+resource "aws_route53_record" "route53_record" {
+        for_each = var.names
+        zone_id = aws_route53_zone.route53_zone.zone_id
+        name = each.value.host
+        type = "A"
+
+        alias {
+                name = aws_lb.nh_alb.dns_name
+                zone_id = aws_route53_zone.route53_zone.zone_id
+                evaluate_target_health = true
+        }
+
+                
+}
